@@ -13,9 +13,11 @@ const getExpensesFromLocalStorage = () => {
 
 export const ExpenseProvider = ({ children }) => {
   const [expenses, setExpenses] = useState(getExpensesFromLocalStorage());
+  
 
   useEffect(() => {
     localStorage.setItem('expenses', JSON.stringify(expenses));
+    
   }, [expenses]);
 
   const addExpense = (expense) => {
@@ -27,6 +29,7 @@ export const ExpenseProvider = ({ children }) => {
     setExpenses((prevExpenses) => 
       prevExpenses.filter((expense) => expense.id !== id)
     );
+    localStorage.setItem('expenses', JSON.stringify(prevExpenses.filter((expense) => expense.id !== id)));
   };
 
   const updateExpense = (id, updatedExpense) => {
@@ -35,6 +38,9 @@ export const ExpenseProvider = ({ children }) => {
         expense.id === id ? { ...expense, ...updatedExpense } : expense
       )
     );
+    localStorage.setItem('expenses', JSON.stringify(prevExpenses.map((expense) =>
+      expense.id === id ? { ...expense, ...updatedExpense } : expense
+    )));
   };
 
   return (

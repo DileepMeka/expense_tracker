@@ -30,6 +30,7 @@ const Modal = ({ isOpen, onClose, expense, children }) => {
 
 const ExpenseHistory = () => {
     const { expenses, removeExpense, updateExpense } = useExpense();
+    console.log(expenses);
     const [search, setSearch] = useState("");
     const [filteredExpenses, setFilteredExpenses] = useState(expenses);
     const [editModal, setEditModal] = useState(false);
@@ -40,9 +41,15 @@ const ExpenseHistory = () => {
         updateExpense(editedExpense.id, editedExpense);
         setEditModal(false);
     }
+    
+    useEffect(() => {
+        setFilteredExpenses(expenses);
+    }, [expenses]);
+    
     useEffect(() => {   
         setFilteredExpenses(expenses.filter(expense => expense.title.toLowerCase().includes(search.toLowerCase())));
     }, [search]);
+    
     const deleteExpense = (id) => {
         removeExpense(id);
     }
